@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using KModkit;
+using System.Text.RegularExpressions;
 
 public class blockbustersScript : MonoBehaviour
 {
@@ -523,6 +524,35 @@ public class blockbustersScript : MonoBehaviour
         if(moduleSolved)
         {
             return;
+        }
+    }
+
+    int CharacterToIndex(char character)
+    {
+        return character >= 'a' ? character - 'a' : character - '1';
+    }
+
+    bool InRange(int number, int min, int max)
+    {
+        return max >= number && number >= min;
+    }
+
+    public string TwitchHelpMessage = "Press a tile using !{0} B5. Tiles are specified by column then row.";
+
+    public IEnumerator ProcessTwitchCommand(string inputCommand)
+    {
+        inputCommand = Regex.Replace(inputCommand.ToLowerInvariant(), @"(\W|_|^(press|submit|click|answer))", "");
+        if (inputCommand.Length != 2) yield break;
+
+        int column = CharacterToIndex(inputCommand[0]);
+        int row = CharacterToIndex(inputCommand[1]);
+
+        if (InRange(column, 0, 4) && InRange(row, 0, 4) && (row < 4 || column % 2 == 1))
+        {
+            yield return null;
+            int index = Enumerable.Range(0, column).Select(n => (n % 2 == 0) ? 4 : 5).Sum() + row;
+            tiles[index].selectable.OnInteract();
+            yield return new WaitForSeconds(0.1f);
         }
     }
 }
