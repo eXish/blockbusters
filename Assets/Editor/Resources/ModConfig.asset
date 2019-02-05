@@ -13,7 +13,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: blockbusters
   title: Blockbusters
-  description: 'Blockbusters 1.02
+  description: 'Blockbusters 1.1
 
     "Can I have a ''P'' please (Lit) BOB?"
 
@@ -23,11 +23,13 @@ MonoBehaviour:
 
     Created by: Royal_Flu$h
 
+    TwitchPlays implemented by: Samfun123
+
 
     Special thanks to Timwi for the hexagon models and highlights.
 
 
     Manual available here: https://ktane.timwi.de/HTML/Blockbusters.html'
-  version: 1.02
+  version: 1.1
   outputFolder: build
   previewImage: {fileID: 2800000, guid: f4cd124eb142d4744a7f3865c421fb42, type: 3}

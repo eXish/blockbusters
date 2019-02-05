@@ -8083,6 +8083,8 @@ MonoBehaviour:
   background: {fileID: 23680003673093746}
   legalLetters: []
   illegalLetters: []
+  TwitchHelpMessage: Press a tile using !{0} B5. Tiles are specified by column then
+    row.
 --- !u!114 &114685613164377796
 MonoBehaviour:
   m_ObjectHideFlags: 1
