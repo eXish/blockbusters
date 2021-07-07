@@ -1,10 +1,9 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
-using KModkit;
 using System.Text.RegularExpressions;
+using KModkit;
+using UnityEngine;
 
 public class blockbustersScript : MonoBehaviour
 {
@@ -48,30 +47,30 @@ public class blockbustersScript : MonoBehaviour
 
     void SetStartPoint()
     {
-        foreach(hexTile tile in tiles)
+        foreach (hexTile tile in tiles)
         {
             tile.GetComponent<Renderer>().material = tileMats[0];
-            int index = UnityEngine.Random.Range(0,24);
-            while(chosenLetters.Contains(index))
+            int index = UnityEngine.Random.Range(0, 24);
+            while (chosenLetters.Contains(index))
             {
-                index = UnityEngine.Random.Range(0,24);
+                index = UnityEngine.Random.Range(0, 24);
             }
             chosenLetters.Add(index);
             tile.containedLetter.text = alphabet[index];
         }
         chosenLetters.Clear();
 
-        for(int i = 0; i <= 3; i++)
+        for (int i = 0; i <= 3; i++)
         {
             int illLetter = UnityEngine.Random.Range(0, illegalLetters.Count());
-            while(selectedIllLetters.Contains(illLetter))
+            while (selectedIllLetters.Contains(illLetter))
             {
                 illLetter = UnityEngine.Random.Range(0, illegalLetters.Count());
             }
             selectedIllLetters.Add(illLetter);
             tiles[i].containedLetter.text = illegalLetters[illLetter];
         }
-        int index2 = UnityEngine.Random.Range(0,4);
+        int index2 = UnityEngine.Random.Range(0, 4);
         int letter = UnityEngine.Random.Range(0, legalLetters.Count());
         tiles[index2].containedLetter.text = legalLetters[letter];
         tiles[index2].legalTile = true;
@@ -81,15 +80,15 @@ public class blockbustersScript : MonoBehaviour
 
     void SetTileTwo()
     {
-        foreach(hexTile tile in tiles)
+        foreach (hexTile tile in tiles)
         {
-            if(!tile.tileTaken)
+            if (!tile.tileTaken)
             {
                 tile.GetComponent<Renderer>().material = tileMats[0];
-                int index = UnityEngine.Random.Range(0,24);
-                while(chosenLetters.Contains(index))
+                int index = UnityEngine.Random.Range(0, 24);
+                while (chosenLetters.Contains(index))
                 {
-                    index = UnityEngine.Random.Range(0,24);
+                    index = UnityEngine.Random.Range(0, 24);
                 }
                 chosenLetters.Add(index);
                 tile.containedLetter.text = alphabet[index];
@@ -97,12 +96,12 @@ public class blockbustersScript : MonoBehaviour
         }
         chosenLetters.Clear();
 
-        for(int i = 0; i < lastPressedTile.legalNextTile.Count(); i++)
+        for (int i = 0; i < lastPressedTile.legalNextTile.Count(); i++)
         {
-            if(!tiles[lastPressedTile.legalNextTile[i]].tileTaken)
+            if (!tiles[lastPressedTile.legalNextTile[i]].tileTaken)
             {
                 int illLetter = UnityEngine.Random.Range(0, illegalLetters.Count());
-                while(selectedIllLetters.Contains(illLetter))
+                while (selectedIllLetters.Contains(illLetter))
                 {
                     illLetter = UnityEngine.Random.Range(0, illegalLetters.Count());
                 }
@@ -111,9 +110,9 @@ public class blockbustersScript : MonoBehaviour
             }
         }
         int index2 = UnityEngine.Random.Range(0, lastPressedTile.legalNextTile.Count());
-        while(tiles[lastPressedTile.legalNextTile[index2]].tileTaken)
+        while (tiles[lastPressedTile.legalNextTile[index2]].tileTaken)
         {
-            index2 = UnityEngine.Random.Range(0,lastPressedTile.legalNextTile.Count());
+            index2 = UnityEngine.Random.Range(0, lastPressedTile.legalNextTile.Count());
         }
         int letter = UnityEngine.Random.Range(0, legalLetters.Count());
         tiles[lastPressedTile.legalNextTile[index2]].containedLetter.text = legalLetters[letter];
@@ -124,12 +123,12 @@ public class blockbustersScript : MonoBehaviour
 
     void TilePress(hexTile tile)
     {
-        if(moduleSolved || tile.tileTaken)
+        if (moduleSolved || tile.tileTaken)
         {
             return;
         }
         GetComponent<KMSelectable>().AddInteractionPunch();
-        if(tile.legalTile && tile.finishingTile)
+        if (tile.legalTile && tile.finishingTile)
         {
             Debug.LogFormat("[Blockbusters #{0}] You pressed {1}. That is correct. Module disarmed.", moduleId, tile.containedLetter.text);
             GetComponent<KMBombModule>().HandlePass();
@@ -137,28 +136,28 @@ public class blockbustersScript : MonoBehaviour
             lastPressedTile = tile;
             tile.containedLetter.text = "";
             tile.tileTaken = true;
-            foreach(hexTile allTaken in tiles)
+            foreach (hexTile allTaken in tiles)
             {
-                if(allTaken.tileTaken)
+                if (allTaken.tileTaken)
                 {
                     allTaken.GetComponent<Renderer>().material = tileMats[2];
                 }
             }
-            foreach(hexTile allTiles in tiles)
+            foreach (hexTile allTiles in tiles)
             {
                 allTiles.legalTile = false;
             }
             moduleSolved = true;
             StartCoroutine(Disco());
         }
-        else if(tile.legalTile)
+        else if (tile.legalTile)
         {
             Audio.PlaySoundAtTransform("buzzer", transform);
             lastPressedTile = tile;
             Debug.LogFormat("[Blockbusters #{0}] You pressed {1}. That is correct.", moduleId, tile.containedLetter.text);
-            foreach(hexTile allTaken in tiles)
+            foreach (hexTile allTaken in tiles)
             {
-                if(allTaken.tileTaken)
+                if (allTaken.tileTaken)
                 {
                     allTaken.GetComponent<Renderer>().material = tileMats[2];
                 }
@@ -166,7 +165,7 @@ public class blockbustersScript : MonoBehaviour
             tile.GetComponent<Renderer>().material = tileMats[1];
             tile.containedLetter.text = "";
             tile.tileTaken = true;
-            foreach(hexTile allTiles in tiles)
+            foreach (hexTile allTiles in tiles)
             {
                 allTiles.legalTile = false;
             }
@@ -176,7 +175,7 @@ public class blockbustersScript : MonoBehaviour
         {
             Debug.LogFormat("[Blockbusters #{0}] Strike! You pressed {1}. That is incorrect. Resetting grid.", moduleId, tile.containedLetter.text);
             GetComponent<KMBombModule>().HandleStrike();
-            foreach(hexTile allTiles in tiles)
+            foreach (hexTile allTiles in tiles)
             {
                 allTiles.legalTile = false;
                 allTiles.tileTaken = false;
@@ -189,29 +188,29 @@ public class blockbustersScript : MonoBehaviour
     {
         yield return new WaitForSeconds(1.2f);
         int flashCount = 0;
-        Vector3 temp = new Vector3(0,-0.05f,0);
-        Vector3 temp2 = new Vector3(0,0f,0);
-        foreach(hexTile tile in tiles)
+        Vector3 temp = new Vector3(0, -0.05f, 0);
+        Vector3 temp2 = new Vector3(0, 0f, 0);
+        foreach (hexTile tile in tiles)
         {
-            if(tile.tileTaken)
+            if (tile.tileTaken)
             {
                 tile.background.transform.localPosition = temp;
             }
         }
-        while(flashCount < 2)
+        while (flashCount < 2)
         {
-            foreach(hexTile tile in tiles)
+            foreach (hexTile tile in tiles)
             {
-                if(tile.tileTaken)
+                if (tile.tileTaken)
                 {
                     tile.GetComponent<Renderer>().material = tileMats[4];
                     tile.background.material = tileMats[4];
                 }
                 background.material = tileMats[4];
             }
-            yield return new WaitForSeconds(0.3f);foreach(hexTile tile in tiles)
+            yield return new WaitForSeconds(0.3f); foreach (hexTile tile in tiles)
             {
-                if(tile.tileTaken)
+                if (tile.tileTaken)
                 {
                     tile.GetComponent<Renderer>().material = tileMats[2];
                     tile.background.material = tileMats[2];
@@ -221,9 +220,9 @@ public class blockbustersScript : MonoBehaviour
             yield return new WaitForSeconds(0.6f);
             flashCount++;
         }
-        foreach(hexTile tile in tiles)
+        foreach (hexTile tile in tiles)
         {
-            if(tile.tileTaken)
+            if (tile.tileTaken)
             {
                 tile.GetComponent<Renderer>().material = tileMats[4];
                 tile.background.material = tileMats[4];
@@ -231,28 +230,28 @@ public class blockbustersScript : MonoBehaviour
             background.material = tileMats[4];
         }
         yield return new WaitForSeconds(0.3f);
-        foreach(hexTile tile in tiles)
+        foreach (hexTile tile in tiles)
         {
-            if(tile.tileTaken)
+            if (tile.tileTaken)
             {
                 tile.background.transform.localPosition = temp2;
             }
         }
-        while(flashCount < 23)
+        while (flashCount < 23)
         {
-            foreach(hexTile tile in tiles)
+            foreach (hexTile tile in tiles)
             {
                 tile.containedLetter.text = "";
-                int index = UnityEngine.Random.Range(0,5);
+                int index = UnityEngine.Random.Range(0, 5);
                 tile.GetComponent<Renderer>().material = tileMats[index];
                 tile.background.material = tileMats[4];
             }
-            int index2 = UnityEngine.Random.Range(0,4);
+            int index2 = UnityEngine.Random.Range(0, 4);
             background.material = tileMats[index2];
             yield return new WaitForSeconds(0.1f);
             flashCount++;
         }
-        foreach(hexTile tile in tiles)
+        foreach (hexTile tile in tiles)
         {
             tile.GetComponent<Renderer>().material = tileMats[2];
         }
@@ -277,7 +276,7 @@ public class blockbustersScript : MonoBehaviour
         int portPlates = Bomb.GetPortPlates().Count();
         int arrayInc = 0;
 
-        if(unlit > batts)
+        if (unlit > batts)
         {
             legalLetters.Add(alphabet[arrayInc]);
         }
@@ -287,7 +286,7 @@ public class blockbustersScript : MonoBehaviour
         }
         arrayInc++;
 
-        if(RJ > 2)
+        if (RJ > 2)
         {
             legalLetters.Add(alphabet[arrayInc]);
         }
@@ -297,7 +296,7 @@ public class blockbustersScript : MonoBehaviour
         }
         arrayInc++;
 
-        if(RCA == 0)
+        if (RCA == 0)
         {
             legalLetters.Add(alphabet[arrayInc]);
         }
@@ -307,7 +306,7 @@ public class blockbustersScript : MonoBehaviour
         }
         arrayInc++;
 
-        if(battHolders == 3)
+        if (battHolders == 3)
         {
             legalLetters.Add(alphabet[arrayInc]);
         }
@@ -317,7 +316,7 @@ public class blockbustersScript : MonoBehaviour
         }
         arrayInc++;
 
-        if(Bomb.IsIndicatorOn("FRK"))
+        if (Bomb.IsIndicatorOn("FRK"))
         {
             legalLetters.Add(alphabet[arrayInc]);
         }
@@ -327,7 +326,7 @@ public class blockbustersScript : MonoBehaviour
         }
         arrayInc++;
 
-        if(PS2 > 0)
+        if (PS2 > 0)
         {
             legalLetters.Add(alphabet[arrayInc]);
         }
@@ -337,7 +336,7 @@ public class blockbustersScript : MonoBehaviour
         }
         arrayInc++;
 
-        if(portPlates < 2)
+        if (portPlates < 2)
         {
             legalLetters.Add(alphabet[arrayInc]);
         }
@@ -347,7 +346,7 @@ public class blockbustersScript : MonoBehaviour
         }
         arrayInc++;
 
-        if(dBatts == 3)
+        if (dBatts == 3)
         {
             legalLetters.Add(alphabet[arrayInc]);
         }
@@ -367,7 +366,7 @@ public class blockbustersScript : MonoBehaviour
         }
         arrayInc++;
 
-        if(Bomb.GetPortPlates().Any(x => x.Contains(Port.Parallel.ToString()) && x.Contains(Port.Serial.ToString())))
+        if (Bomb.GetPortPlates().Any(x => x.Contains(Port.Parallel.ToString()) && x.Contains(Port.Serial.ToString())))
         {
             legalLetters.Add(alphabet[arrayInc]);
         }
@@ -377,7 +376,7 @@ public class blockbustersScript : MonoBehaviour
         }
         arrayInc++;
 
-        if(Bomb.IsIndicatorOff("CAR"))
+        if (Bomb.IsIndicatorOff("CAR"))
         {
             legalLetters.Add(alphabet[arrayInc]);
         }
@@ -387,7 +386,7 @@ public class blockbustersScript : MonoBehaviour
         }
         arrayInc++;
 
-        if(portPlates + battHolders < 4)
+        if (portPlates + battHolders < 4)
         {
             legalLetters.Add(alphabet[arrayInc]);
         }
@@ -397,7 +396,7 @@ public class blockbustersScript : MonoBehaviour
         }
         arrayInc++;
 
-        if(batts == 5)
+        if (batts == 5)
         {
             legalLetters.Add(alphabet[arrayInc]);
         }
@@ -407,7 +406,7 @@ public class blockbustersScript : MonoBehaviour
         }
         arrayInc++;
 
-        if((Bomb.GetSerialNumberNumbers().Last() % 2) == 1)
+        if ((Bomb.GetSerialNumberNumbers().Last() % 2) == 1)
         {
             legalLetters.Add(alphabet[arrayInc]);
         }
@@ -417,7 +416,7 @@ public class blockbustersScript : MonoBehaviour
         }
         arrayInc++;
 
-        if(DVI > dBatts)
+        if (DVI > dBatts)
         {
             legalLetters.Add(alphabet[arrayInc]);
         }
@@ -427,7 +426,7 @@ public class blockbustersScript : MonoBehaviour
         }
         arrayInc++;
 
-        if(Bomb.IsIndicatorOn("BOB"))
+        if (Bomb.IsIndicatorOn("BOB"))
         {
             legalLetters.Add(alphabet[arrayInc]);
         }
@@ -447,7 +446,7 @@ public class blockbustersScript : MonoBehaviour
         }
         arrayInc++;
 
-        if(aaBatts == 4)
+        if (aaBatts == 4)
         {
             legalLetters.Add(alphabet[arrayInc]);
         }
@@ -457,7 +456,7 @@ public class blockbustersScript : MonoBehaviour
         }
         arrayInc++;
 
-        if(Bomb.GetSerialNumberLetters().Count() < portPlates)
+        if (Bomb.GetSerialNumberLetters().Count() < portPlates)
         {
             legalLetters.Add(alphabet[arrayInc]);
         }
@@ -467,7 +466,7 @@ public class blockbustersScript : MonoBehaviour
         }
         arrayInc++;
 
-        if(portPlates > 1)
+        if (portPlates > 1)
         {
             legalLetters.Add(alphabet[arrayInc]);
         }
@@ -477,7 +476,7 @@ public class blockbustersScript : MonoBehaviour
         }
         arrayInc++;
 
-        if(Bomb.GetSerialNumberNumbers().Sum() > 17)
+        if (Bomb.GetSerialNumberNumbers().Sum() > 17)
         {
             legalLetters.Add(alphabet[arrayInc]);
         }
@@ -487,7 +486,7 @@ public class blockbustersScript : MonoBehaviour
         }
         arrayInc++;
 
-        if(Bomb.IsIndicatorOff("IND"))
+        if (Bomb.IsIndicatorOff("IND"))
         {
             legalLetters.Add(alphabet[arrayInc]);
         }
@@ -497,7 +496,7 @@ public class blockbustersScript : MonoBehaviour
         }
         arrayInc++;
 
-        if(lit > unlit)
+        if (lit > unlit)
         {
             legalLetters.Add(alphabet[arrayInc]);
         }
@@ -507,7 +506,7 @@ public class blockbustersScript : MonoBehaviour
         }
         arrayInc++;
 
-        if(Bomb.GetSerialNumberNumbers().Count() > lit)
+        if (Bomb.GetSerialNumberNumbers().Count() > lit)
         {
             legalLetters.Add(alphabet[arrayInc]);
         }
@@ -521,7 +520,7 @@ public class blockbustersScript : MonoBehaviour
 
     public void PressButton()
     {
-        if(moduleSolved)
+        if (moduleSolved)
         {
             return;
         }
