@@ -13,7 +13,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: blockbusters
   title: Blockbusters
-  description: 'Blockbusters 1.1
+  description: 'Blockbusters 1.11
 
     "Can I have a ''P'' please (Lit) BOB?"
 
@@ -30,6 +30,6 @@ MonoBehaviour:
 
 
     Manual available here: https://ktane.timwi.de/HTML/Blockbusters.html'
-  version: 1.1
+  version: 1.11
   outputFolder: build
   previewImage: {fileID: 2800000, guid: f4cd124eb142d4744a7f3865c421fb42, type: 3}
